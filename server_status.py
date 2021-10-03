@@ -9,14 +9,15 @@ import logging
 ##########
 # CONFIG #
 ##########
-scrape_url = "https://www.newworld.com/en-us/support/server-status" # The page to scrape for server status - probably won't need to change
-webhook_url = "https://discord.com/api/webhooks/YOUR_CHANNEL_WEBHOOK_HERE" # Your discord webhook URL - https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
 
-filter_regions = False # Set to True to only post updates about certain regions
-monitored_regions = ["US East", "US West"] # List of regions to update
+scrape_url = "https://www.newworld.com/fr-fr/support/server-status" # The page to scrape for server status - probably won't need to change
+webhook_url = os.environ['WEBHOOK_URL'] # Your discord webhook URL - https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
 
-filter_servers = False # Set to True to only post updates about certain servers
-monitored_servers = ["Ephelyn", "Samavasarana"] # List of server to update
+filter_regions = True # Set to True to only post updates about certain regions
+monitored_regions = ["Eu Central"] # List of regions to update
+
+filter_servers = True # Set to True to only post updates about certain servers
+monitored_servers = ["Ife","Bakhu","Lyonesse","Melinde","Estotiland","Tabor Island","Caprona","Kaloon","Ship-Trap","Jumala","Charadra","Lethe","Malva","Capra","Cervus","Carina","Caph","Caelum"] # List of server to update
 
 logging.basicConfig(format='%(message)s', level="INFO")
 log = logging.getLogger('root')
@@ -68,8 +69,12 @@ for index, region in regions_dict.items():
             server_status = "✅"
         elif server.find_all("div", {"class": "ags-ServerStatus-content-responses-response-server-status ags-ServerStatus-content-responses-response-server-status--down"}):
             server_status = "❌"
+        elif server.find_all("div", {"class": "ags-ServerStatus-content-responses-response-server-status ags-ServerStatus-content-responses-response-server-status--full"}):
+            server_status = "🔒"
+        elif server.find_all("div", {"class": "ags-ServerStatus-content-responses-response-server-status ags-ServerStatus-content-responses-response-server-status--maintenance"}):
+            server_status = "🔧"
         else:
-            server_status = "⚠️"
+            server_status = "💨"
 
         log.info(server_status + " - " + region + ", " + server_name.text.strip())
         new_status_dict[region].update({server_name.text.strip() : server_status})

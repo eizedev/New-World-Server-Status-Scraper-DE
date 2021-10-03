@@ -1,37 +1,63 @@
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from copy import deepcopy
 
-def discord_webhook(webhook_url, region, server, new_status, status_url, message):
+
+def discord_webhook(webhook_url, region, server, new_status, status_url,
+                    message):
     if new_status == "✅":
         status_color = "00cf00"
     elif new_status == "❌":
         status_color = "ff0000"
+    elif new_status == "🔒":
+        status_color = "FFA500"
+    elif new_status == "🔧":
+        status_color = "696969"
     else:
         status_color = "ffaa00"
 
-    webhook = DiscordWebhook(url = webhook_url, rate_limit_retry = True)
-    embed = DiscordEmbed(title = "New World Server Status", description = message, color = status_color, url = status_url)
-    embed.add_embed_field(name = "Region", value = region)
-    embed.add_embed_field(name = "Server", value = server)
-    embed.add_embed_field(name = "Status", value = new_status)
+    webhook = DiscordWebhook(url=webhook_url, rate_limit_retry=True)
+    embed = DiscordEmbed(title="Statut des serveurs New World",
+                         description=message,
+                         color=status_color,
+                         url=status_url)
+    embed.add_embed_field(name="Région", value=region)
+    embed.add_embed_field(name="Serveur", value=server)
+    embed.add_embed_field(name="Statut", value=new_status)
     webhook.add_embed(embed)
     response = webhook.execute()
 
     return response
 
+
 def switch(old_status, new_status, webhook_url, region, server, url):
     if new_status == "✅":
-        if old_status == "❌":
-            discord_webhook(webhook_url, region, server, new_status, url, "The following server is now online.")
+        if old_status == "🔒" or old_status == "❌" or old_status == "🔧":
+            discord_webhook(webhook_url, region, server, new_status, url, "Le serveur suivant est à présent online:")
         elif old_status == "null":
-            discord_webhook(webhook_url, region, server, new_status, url, "The following server has appeared on the status page.")
+            discord_webhook(
+                webhook_url, region, server, new_status, url, "Le serveur suivant vient d'apparaître dans la liste:")
     elif new_status == "❌":
-        if old_status == "✅":
-            discord_webhook(webhook_url, region, server, new_status, url, "The following server is now offline.")
+        if old_status == "✅" or old_status == "🔒" or old_status == "🔧":
+            discord_webhook(webhook_url, region, server, new_status, url, "Le serveur suivant est à présent hors-ligne.")
         elif old_status == "null":
-            discord_webhook(webhook_url, region, server, new_status, url, "The following server has appeared on the status page.")
+            discord_webhook(
+                webhook_url, region, server, new_status, url, "Le serveur suivant vient d'apparaître dans la liste:")
+    elif new_status == "🔧":
+        if old_status == "✅" or old_status == "🔒" or old_status == "❌":
+            discord_webhook(webhook_url, region, server, new_status, url, "Le serveur suivant est à présent en maintenance:")
+        elif old_status == "null":
+            discord_webhook(
+                webhook_url, region, server, new_status, url, "Le serveur suivant vient d'apparaître dans la liste:")
+    elif new_status == "🔒":
+        if old_status == "✅" or old_status == "❌" or old_status == "🔧":
+            discord_webhook(webhook_url, region, server, new_status, url, "Le serveur suivant est à présent plein:")
+        elif old_status == "null":
+            discord_webhook(
+                webhook_url, region, server, new_status, url, "Le serveur suivant vient d'apparaître dans la liste:")
     elif new_status == "null":
-        discord_webhook(webhook_url, region, server, "⚠️", url, "The following server has disappeared from status page.")
+        discord_webhook(
+            webhook_url, region, server, "💨", url, "Le serveur suivant vient de disparaître de la liste:")
+
 
 def deep_diff(x, y, parent_key=None, exclude_keys=[], epsilon_keys=[]):
     EPSILON = 0.5
@@ -62,7 +88,11 @@ def deep_diff(x, y, parent_key=None, exclude_keys=[], epsilon_keys=[]):
             if k in exclude_keys:
                 continue
 
-            next_d = deep_diff(x[k], y[k], parent_key=k, exclude_keys=exclude_keys, epsilon_keys=epsilon_keys)
+            next_d = deep_diff(x[k],
+                               y[k],
+                               parent_key=k,
+                               exclude_keys=exclude_keys,
+                               epsilon_keys=epsilon_keys)
             if next_d is None:
                 continue
 
@@ -77,12 +107,22 @@ def deep_diff(x, y, parent_key=None, exclude_keys=[], epsilon_keys=[]):
         x, y = y, x
 
     for i, x_val in enumerate(x):
-        d[i] = deep_diff(y[i], x_val, parent_key=i, exclude_keys=exclude_keys, epsilon_keys=epsilon_keys) if flipped else deep_diff(x_val, y[i], parent_key=i, exclude_keys=exclude_keys, epsilon_keys=epsilon_keys)
+        d[i] = deep_diff(y[i],
+                         x_val,
+                         parent_key=i,
+                         exclude_keys=exclude_keys,
+                         epsilon_keys=epsilon_keys) if flipped else deep_diff(
+                             x_val,
+                             y[i],
+                             parent_key=i,
+                             exclude_keys=exclude_keys,
+                             epsilon_keys=epsilon_keys)
 
     for i in range(len(x), len(y)):
         d[i] = (y[i], None) if flipped else (None, y[i])
 
     return None if all(map(lambda x: x is None, d)) else d
+
 
 def float_or_None(x):
     try:
