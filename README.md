@@ -1,6 +1,10 @@
-# New-World-Server-Status-Scraper
+# New-World-Server-Status-Scraper-FR
 
-![example](https://i.imgur.com/Rj4a2EB.png)
+Forked Discord bot of https://github.com/40Cakes/New-World-Server-Status-Scraper
+
+Added features : 
+- Localized in French
+- Add maintenance Status
 
  Requirements:
 -  python
@@ -11,7 +15,7 @@ Install script dependencies:
 pip install -r requirements.txt
 ```
 
-Update the Discord webhook URL variable in server_status.py to post to that channel.
+Update the Discord webhook URL variable in server_status.py to post to that channel or create a WEBHOOK_URL config variable.
 
 Schedule script to run every x minutes (cron):
 ```
