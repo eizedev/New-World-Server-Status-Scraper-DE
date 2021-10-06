@@ -1,4 +1,4 @@
-# New-World-Server-Status-Scraper-FR
+# New-World-Server-Status-Scraper-DE
 
 Forked Discord bot of https://github.com/40Cakes/New-World-Server-Status-Scraper
 
