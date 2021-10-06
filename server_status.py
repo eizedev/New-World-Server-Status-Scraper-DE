@@ -3,7 +3,7 @@ from functions import deep_diff
 from functions import switch
 import requests
 import json
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 import os
 import logging
 
@@ -11,13 +11,13 @@ import logging
 # CONFIG #
 ##########
 
-load_dotenv()
+config = dotenv_values("config.env")
 
-scrape_url = "https://www.newworld.com/fr-fr/support/server-status"
-webhook_url = os.environ.get('WEBHOOK_URL')
+scrape_url = "https://www.newworld.com/support/server-status"
+webhook_url = config.get('WEBHOOK_URL')
 
-filter_regions = True # Set to True to only post updates about certain regions
-monitored_regions = ["Eu Central"] # List of regions to update
+filter_regions = False # Set to True to only post updates about certain regions
+monitored_regions = ["EU Central"] # List of regions to update
 
 filter_servers = True # Set to True to only post updates about certain servers
 monitored_servers = ["Thrudheim", "Mandara", "Lacerta"] # List of server to update
@@ -79,7 +79,9 @@ for index, region in regions_dict.items():
         else:
             server_status = "💨"
 
-        log.info(server_status + " - " + region + ", " + server_name.text.strip())
+        if filter_servers:
+            if server in monitored_servers:
+                log.info(server_status + " - " + region + ", " + server_name.text.strip())
         new_status_dict[region].update({server_name.text.strip() : server_status})
 
 log.info("\nWriting new server statuses to file: status.json...")
@@ -106,14 +108,16 @@ if diff != None:
                 
             new_status = diff_dict[region][server][1]
 
-            log.info(region + ", " + server + "\nPrevious State: " + old_status + " - Current State: " + new_status)
-
             if filter_servers:
                 if server in monitored_servers:
                     switch(old_status, new_status, webhook_url, region, server, scrape_url)
+                    log.info(region + ", " + server + "\nPrevious State: " + old_status + " - Current State: "
+                             + new_status)
             elif filter_regions:
                 if region in monitored_regions:
                     switch(old_status, new_status, webhook_url, region, server, scrape_url)
+                    log.info(region + ", " + server + "\nPrevious State: " + old_status + " - Current State: "
+                             + new_status)
             else:
                 switch(old_status, new_status, webhook_url, region, server, scrape_url)
 else:

@@ -31,29 +31,29 @@ def discord_webhook(webhook_url, region, server, new_status, status_url,
 
 def switch(old_status, new_status, webhook_url, region, server, url):
     if new_status == "✅":
-        if old_status == "🔒" or old_status == "❌" or old_status == "🔧":
-            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist jetzt online:")
-        elif old_status == "null":
-            discord_webhook(
-                webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der Liste aufgetaucht:")
+        if old_status == "null":
+            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der "
+                                                                          "Liste aufgetaucht:")
+        elif old_status != new_status:
+            discord_webhook(webhook_url, region, server, "✅ (Online)", url, "Der folgende Server ist jetzt online:")
     elif new_status == "❌":
-        if old_status == "✅" or old_status == "🔒" or old_status == "🔧":
-            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist jetzt offline:")
-        elif old_status == "null":
-            discord_webhook(
-                webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der Liste aufgetaucht:")
+        if old_status == "null":
+            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der "
+                                                                          "Liste aufgetaucht:")
+        elif old_status != new_status:
+            discord_webhook(webhook_url, region, server, "❌ (Offline)", url, "Der folgende Server ist jetzt offline:")
     elif new_status == "🔧":
-        if old_status == "✅" or old_status == "🔒" or old_status == "❌":
-            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server wird gerade gewartet:")
-        elif old_status == "null":
-            discord_webhook(
-                webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der Liste aufgetaucht:")
+        if old_status == "null":
+            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der "
+                                                                          "Liste aufgetaucht:")
+        elif old_status != new_status:
+            discord_webhook(webhook_url, region, server, "🔧 (Wartung)", url, "Der folgende Server wird gerade gewartet:")
     elif new_status == "🔒":
-        if old_status == "✅" or old_status == "❌" or old_status == "🔧":
-            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist jetzt voll:")
-        elif old_status == "null":
-            discord_webhook(
-                webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der Liste aufgetaucht:")
+        if old_status == "null":
+            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der "
+                                                                          "Liste aufgetaucht:")
+        elif old_status != new_status:
+            discord_webhook(webhook_url, region, server, "🔒 (Voll)", url, "Der folgende Server ist jetzt voll:")
     elif new_status == "null":
         discord_webhook(
             webhook_url, region, server, "💨", url, "Der folgende Server ist gerade aus der Liste verschwunden:")
