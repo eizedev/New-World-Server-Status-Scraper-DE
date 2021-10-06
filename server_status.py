@@ -3,6 +3,7 @@ from functions import deep_diff
 from functions import switch
 import requests
 import json
+from dotenv import load_dotenv
 import os
 import logging
 
@@ -10,14 +11,16 @@ import logging
 # CONFIG #
 ##########
 
-scrape_url = "https://www.newworld.com/fr-fr/support/server-status" # The page to scrape for server status - probably won't need to change
-webhook_url = os.environ['WEBHOOK_URL'] # Your discord webhook URL - https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
+load_dotenv()
+
+scrape_url = "https://www.newworld.com/fr-fr/support/server-status"
+webhook_url = os.environ.get('WEBHOOK_URL')
 
 filter_regions = True # Set to True to only post updates about certain regions
 monitored_regions = ["Eu Central"] # List of regions to update
 
 filter_servers = True # Set to True to only post updates about certain servers
-monitored_servers = ["Ife","Bakhu","Lyonesse","Melinde","Estotiland","Tabor Island","Caprona","Kaloon","Ship-Trap","Jumala","Charadra","Lethe","Malva","Capra","Cervus","Carina","Caph","Caelum"] # List of server to update
+monitored_servers = ["Thrudheim", "Mandara", "Lacerta"] # List of server to update
 
 logging.basicConfig(format='%(message)s', level="INFO")
 log = logging.getLogger('root')
@@ -105,7 +108,6 @@ if diff != None:
 
             log.info(region + ", " + server + "\nPrevious State: " + old_status + " - Current State: " + new_status)
 
-            log.info("Sending Discord message...")
             if filter_servers:
                 if server in monitored_servers:
                     switch(old_status, new_status, webhook_url, region, server, scrape_url)

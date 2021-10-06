@@ -16,13 +16,13 @@ def discord_webhook(webhook_url, region, server, new_status, status_url,
         status_color = "ffaa00"
 
     webhook = DiscordWebhook(url=webhook_url, rate_limit_retry=True)
-    embed = DiscordEmbed(title="Statut des serveurs New World",
+    embed = DiscordEmbed(title="Status der New World Server",
                          description=message,
                          color=status_color,
                          url=status_url)
-    embed.add_embed_field(name="Région", value=region)
-    embed.add_embed_field(name="Serveur", value=server)
-    embed.add_embed_field(name="Statut", value=new_status)
+    embed.add_embed_field(name="Region", value=region)
+    embed.add_embed_field(name="Server", value=server)
+    embed.add_embed_field(name="Status", value=new_status)
     webhook.add_embed(embed)
     response = webhook.execute()
 
@@ -32,31 +32,31 @@ def discord_webhook(webhook_url, region, server, new_status, status_url,
 def switch(old_status, new_status, webhook_url, region, server, url):
     if new_status == "✅":
         if old_status == "🔒" or old_status == "❌" or old_status == "🔧":
-            discord_webhook(webhook_url, region, server, new_status, url, "Le serveur suivant est à présent online:")
+            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist jetzt online:")
         elif old_status == "null":
             discord_webhook(
-                webhook_url, region, server, new_status, url, "Le serveur suivant vient d'apparaître dans la liste:")
+                webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der Liste aufgetaucht:")
     elif new_status == "❌":
         if old_status == "✅" or old_status == "🔒" or old_status == "🔧":
-            discord_webhook(webhook_url, region, server, new_status, url, "Le serveur suivant est à présent hors-ligne.")
+            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist jetzt offline:")
         elif old_status == "null":
             discord_webhook(
-                webhook_url, region, server, new_status, url, "Le serveur suivant vient d'apparaître dans la liste:")
+                webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der Liste aufgetaucht:")
     elif new_status == "🔧":
         if old_status == "✅" or old_status == "🔒" or old_status == "❌":
-            discord_webhook(webhook_url, region, server, new_status, url, "Le serveur suivant est à présent en maintenance:")
+            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server wird gerade gewartet:")
         elif old_status == "null":
             discord_webhook(
-                webhook_url, region, server, new_status, url, "Le serveur suivant vient d'apparaître dans la liste:")
+                webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der Liste aufgetaucht:")
     elif new_status == "🔒":
         if old_status == "✅" or old_status == "❌" or old_status == "🔧":
-            discord_webhook(webhook_url, region, server, new_status, url, "Le serveur suivant est à présent plein:")
+            discord_webhook(webhook_url, region, server, new_status, url, "Der folgende Server ist jetzt voll:")
         elif old_status == "null":
             discord_webhook(
-                webhook_url, region, server, new_status, url, "Le serveur suivant vient d'apparaître dans la liste:")
+                webhook_url, region, server, new_status, url, "Der folgende Server ist gerade in der Liste aufgetaucht:")
     elif new_status == "null":
         discord_webhook(
-            webhook_url, region, server, "💨", url, "Le serveur suivant vient de disparaître de la liste:")
+            webhook_url, region, server, "💨", url, "Der folgende Server ist gerade aus der Liste verschwunden:")
 
 
 def deep_diff(x, y, parent_key=None, exclude_keys=[], epsilon_keys=[]):
