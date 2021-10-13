@@ -22,6 +22,7 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - uses: actions/download-artifact@v2
+      continue-on-error: true
       with:
         name: server-status
     - name: Check server status
