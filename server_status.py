@@ -11,10 +11,11 @@ import logging
 # CONFIG #
 ##########
 
-config = dotenv_values("config.env")
+#config = dotenv_values("config.env")
 
 scrape_url = "https://www.newworld.com/support/server-status"
-webhook_url = config.get('WEBHOOK_URL')
+#webhook_url = config.get('WEBHOOK_URL')
+webhook_url = os.environ['WEBHOOK_URL']
 
 filter_regions = True  # Set to True to only post updates about certain regions
 monitored_regions = ["EU Central"]  # List of regions to update
