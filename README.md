@@ -1,4 +1,4 @@
-# New-World-Server-Status-Scraper-DE
+# New World Server Status Scraper - DE
 
 ## Added features
 
