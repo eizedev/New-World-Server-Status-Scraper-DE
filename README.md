@@ -1,5 +1,9 @@
 # New World Server Status Scraper - DE
 
+Parses the [New World Server Status page](https://www.newworld.com/support/server-status) and will sent a message to a defined Discord channel (Webhook) if server status changes.
+
+If using the github actions files, the check will run every 5 minutes.
+
 ## Added features
 
 - Localized in German
