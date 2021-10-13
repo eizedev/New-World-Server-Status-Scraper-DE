@@ -25,3 +25,10 @@ jobs:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL}}
       run: |
         python server_status.py
+    - name: Cache Server Status File
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-server-status
+      with:
+        path: ~/status.json
+        key: ${{ runner.os }}-build-${{ hashFiles('status.json') }}
