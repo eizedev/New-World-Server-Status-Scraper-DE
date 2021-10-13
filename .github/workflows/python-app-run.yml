@@ -26,8 +26,12 @@ jobs:
       env:
         cache-name: cache-server-status
       with:
-        path: status.json
-        key: ${{ runner.os }}-build-${{ hashFiles('status.json') }}
+        path: ~/status.json
+        key: ${{ runner.os }}-file-${{ hashFiles('**/status.json') }}
+        restore-keys: |
+          Linux-file-${{ hashFiles('status.json') }}
+          Linux-file-
+          Linux-file-
     - name: Check server status
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL}}
