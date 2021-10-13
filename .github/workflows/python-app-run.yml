@@ -19,18 +19,18 @@ jobs:
         python-version: 3.9
     - name: Install dependencies
       run: |
+        touch status.json
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - uses: actions/download-artifact@v2
-      continue-on-error: true
+    - name: Cache Server Status File
+      uses: pat-s/always-upload-cache@v2.1.5
+      env:
+        cache-name: cache-server-status
       with:
-        name: server-status
+        path: status.json
+        key: ${{ runner.os }}-file-${{ hashFiles('status.json') }}
     - name: Check server status
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL}}
       run: |
         python server_status.py
-    - uses: actions/upload-artifact@v2
-      with:
-        name: server-status
-        path: status.json
