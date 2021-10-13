@@ -21,19 +21,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Cache Server Status File
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-server-status
+    - uses: actions/download-artifact@v2
       with:
-        path: status.json
-        key: ${{ runner.os }}-file-${{ hashFiles('status.json') }}
-        restore-keys: |
-          Linux-file-${{ hashFiles('status.json') }}
-          Linux-file-
-          Linux-
+        name: server-status
     - name: Check server status
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL}}
       run: |
         python server_status.py
+    - uses: actions/upload-artifact@v2
+      with:
+        name: server-status
+        path: status.json
