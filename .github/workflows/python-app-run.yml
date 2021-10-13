@@ -3,6 +3,7 @@
 name: New World Server status
 
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '*/5 * * * *'
 
