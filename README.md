@@ -1,3 +1,5 @@
+[![New World Server status](https://github.com/eizedev/New-World-Server-Status-Scraper-DE/actions/workflows/python-app-run.yml/badge.svg)](https://github.com/eizedev/New-World-Server-Status-Scraper-DE/actions/workflows/python-app-run.yml) [![Python application testing/linting](https://github.com/eizedev/New-World-Server-Status-Scraper-DE/actions/workflows/python-app-test.yml/badge.svg)](https://github.com/eizedev/New-World-Server-Status-Scraper-DE/actions/workflows/python-app-test.yml) [![CodeQL](https://github.com/eizedev/New-World-Server-Status-Scraper-DE/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/eizedev/New-World-Server-Status-Scraper-DE/actions/workflows/codeql-analysis.yml) 
+
 # New World Server Status Scraper - DE
 
 Parses the [New World Server Status page](https://www.newworld.com/support/server-status) and will sent a message to a defined Discord channel (Webhook) if server status changes.
