@@ -29,3 +29,7 @@ Schedule script to run every x minutes (cron) or use github actions. (If using g
 ```python
 python3 server_status.py
 ```
+
+## Disclaimer
+
+> The scripts in this repository fetches data from the [official New World website]((https://www.newworld.com/support/server-status)). So this mechanism can break any time without any notice if Amazon Game Studios make any structure change on their server status page.
