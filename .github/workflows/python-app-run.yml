@@ -27,7 +27,7 @@ jobs:
         cache-name: cache-server-status
       with:
         path: status.json
-        key: ${{ runner.os }}-file1-${{ hashFiles('status.json') }}
+        key: ${{ runner.os }}-file-${{ hashFiles('status.json') }}
     - name: Check server status
       env:
         WEBHOOK_URL: ${{ secrets.WEBHOOK_URL}}
