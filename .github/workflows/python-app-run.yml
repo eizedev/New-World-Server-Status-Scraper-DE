@@ -24,7 +24,7 @@ jobs:
     - name: Cache Server Status File
       uses: pat-s/always-upload-cache@v2.1.5
       env:
-        cache-name: cache-server-status
+        cache-name: cache1-server-status
       with:
         path: status.json
         key: ${{ runner.os }}-file-${{ hashFiles('status.json') }}
